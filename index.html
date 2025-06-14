@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Universal Department Work Logger</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f9f9f9;
+      padding: 40px;
+    }
+
+    h2 {
+      text-align: center;
+      color: #333;
+    }
+
+    form {
+      max-width: 600px;
+      margin: auto;
+      background-color: #fff;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    }
+
+    label {
+      font-weight: bold;
+      display: block;
+      margin-top: 15px;
+    }
+
+    input[type="text"],
+    input[type="date"],
+    textarea,
+    select {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      margin-top: 20px;
+      background-color: #4CAF50;
+      color: white;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+  </style>
+</head>
+<body>
+  <h2>Universal Department Work Logger</h2>
+
+  <form method="POST" action="/submit">
+    <label>Date:</label>
+    <input type="date" name="date" required>
+
+    <label>Shift:</label>
+    <select name="shift">
+      <option>Morning</option>
+      <option>Afternoon</option>
+      <option>Night</option>
+      <option>General</option>
+    </select>
+
+    <label>Sector:</label>
+    <input type="text" name="sector" placeholder="e.g., Hospital, School, Construction" required>
+
+    <label>Department:</label>
+    <input type="text" name="department" placeholder="e.g., Pharmacy, Teaching" required>
+
+    <label>Sub-Department:</label>
+    <input type="text" name="subdepartment" placeholder="e.g., X-Ray Unit, Math Dept">
+
+    <label>Assigned Person:</label>
+    <input type="text" name="person" placeholder="e.g., Dr. Sharma, Mr. Khan">
+
+    <label>Task Description:</label>
+    <textarea name="task" rows="3" required></textarea>
+
+    <label>Status:</label>
+    <select name="status">
+      <option>Pending</option>
+      <option>In Progress</option>
+      <option>Completed</option>
+    </select>
+
+    <label>Remarks:</label>
+    <textarea name="remarks" rows="2"></textarea>
+
+    <button type="submit">Save Task</button>
+  </form>
+</body>
+</html>
