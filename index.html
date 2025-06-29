@@ -174,9 +174,11 @@
       const form = document.getElementById('workForm');
       const submitBtn = document.getElementById('submitBtn');
       const alertBox = document.getElementById('alertBox');
-      const scriptURL = 'https://script.google.com/macros/s/AKfycbyE0q2MIcUuMvioXh_wV6JrQjnMoOzyPcDWp8sq6ManxYlaaTp6isBsOpWOkhE-gcGSbA/exec';
+      
+      // ✅ Your actual Web App URL
+      const scriptURL = 'https://script.google.com/macros/s/AKfycbzK-jKBTtRbsK7H_Y50aIwBDM9LvQ8PNu1F5-n0_yJzjBrmWTjg6s8unsHZaobVRUn6wg/exec';
 
-      // Set today's date as default
+      // Set today as default
       const today = new Date().toISOString().split('T')[0];
       document.getElementById('date').value = today;
 
@@ -210,15 +212,15 @@
           const result = await response.json();
 
           if (result.result === 'success') {
-            showAlert('Task saved successfully!', 'success');
+            showAlert('✅ Task saved successfully!', 'success');
             form.reset();
             document.getElementById('date').value = today;
           } else {
-            throw new Error(result.error || 'Failed to save task');
+            throw new Error(result.message || '❌ Failed to save task');
           }
         } catch (error) {
           console.error('Error:', error);
-          showAlert(`Error: ${error.message}`, 'error');
+          showAlert(`❌ Error: ${error.message}`, 'error');
         } finally {
           submitBtn.disabled = false;
           submitBtn.textContent = 'Save Task';
