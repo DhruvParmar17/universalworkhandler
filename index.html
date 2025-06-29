@@ -60,7 +60,7 @@
 <body>
   <h2>Universal Department Work Logger</h2>
 
-  <form method="POST" action="/submit">
+  <form id="taskForm">
     <label>Date:</label>
     <input type="date" name="date" required>
 
@@ -99,5 +99,37 @@
 
     <button type="submit">Save Task</button>
   </form>
+
+  <script>
+    const form = document.getElementById('taskForm');
+    const scriptURL = "https://script.google.com/macros/s/AKfycbxZHdV2_P7M8PY0fWwmOCdnW3IQ4dejPrvFNVIjkYxv4p37f_1u-eEQoeCK-0NqhIJGiQ/exec";
+
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+      const formData = new FormData(form);
+      const data = Object.fromEntries(formData.entries());
+
+      fetch(scriptURL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      })
+      .then(res => res.json())
+      .then(response => {
+        if (response.result === "success") {
+          alert("✅ Task saved successfully!");
+          form.reset();
+        } else {
+          alert("❌ Error saving task: " + response.error);
+        }
+      })
+      .catch(err => {
+        alert("❌ Connection error. Check browser console.");
+        console.error(err);
+      });
+    });
+  </script>
 </body>
 </html>
