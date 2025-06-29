@@ -6,22 +6,22 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      background-color: #f9f9f9;
-      padding: 40px;
+      background-color: #f0f4f8;
+      padding: 30px;
     }
 
     h2 {
       text-align: center;
-      color: #333;
+      color: #2c3e50;
     }
 
     form {
       max-width: 600px;
       margin: auto;
       background-color: #fff;
-      padding: 30px;
+      padding: 25px;
       border-radius: 10px;
-      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     }
 
     label {
@@ -43,29 +43,31 @@
 
     button {
       margin-top: 20px;
-      background-color: #4CAF50;
+      background-color: #27ae60;
       color: white;
-      padding: 12px 20px;
+      padding: 12px;
       border: none;
       border-radius: 5px;
+      width: 100%;
       font-size: 16px;
       cursor: pointer;
     }
 
     button:hover {
-      background-color: #45a049;
+      background-color: #219150;
     }
   </style>
 </head>
 <body>
   <h2>Universal Department Work Logger</h2>
 
-  <form id="taskForm">
+  <form id="workForm">
     <label>Date:</label>
     <input type="date" name="date" required>
 
     <label>Shift:</label>
-    <select name="shift">
+    <select name="shift" required>
+      <option value="">Select Shift</option>
       <option>Morning</option>
       <option>Afternoon</option>
       <option>Night</option>
@@ -73,22 +75,23 @@
     </select>
 
     <label>Sector:</label>
-    <input type="text" name="sector" placeholder="e.g., Hospital, School, Construction" required>
+    <input type="text" name="sector" placeholder="e.g., Hospital, School" required>
 
     <label>Department:</label>
-    <input type="text" name="department" placeholder="e.g., Pharmacy, Teaching" required>
+    <input type="text" name="department" required>
 
     <label>Sub-Department:</label>
-    <input type="text" name="subdepartment" placeholder="e.g., X-Ray Unit, Math Dept">
+    <input type="text" name="subdepartment">
 
     <label>Assigned Person:</label>
-    <input type="text" name="person" placeholder="e.g., Dr. Sharma, Mr. Khan">
+    <input type="text" name="person">
 
     <label>Task Description:</label>
     <textarea name="task" rows="3" required></textarea>
 
     <label>Status:</label>
-    <select name="status">
+    <select name="status" required>
+      <option value="">Select Status</option>
       <option>Pending</option>
       <option>In Progress</option>
       <option>Completed</option>
@@ -101,33 +104,38 @@
   </form>
 
   <script>
-    const form = document.getElementById('taskForm');
+    const form = document.getElementById("workForm");
     const scriptURL = "https://script.google.com/macros/s/AKfycbxZHdV2_P7M8PY0fWwmOCdnW3IQ4dejPrvFNVIjkYxv4p37f_1u-eEQoeCK-0NqhIJGiQ/exec";
 
-    form.addEventListener('submit', e => {
+    form.addEventListener("submit", e => {
       e.preventDefault();
+
       const formData = new FormData(form);
-      const data = Object.fromEntries(formData.entries());
+      const data = {};
+      formData.forEach((value, key) => {
+        data[key] = value;
+      });
 
       fetch(scriptURL, {
-        method: 'POST',
+        method: "POST",
+        body: JSON.stringify(data),
         headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
+          "Content-Type": "application/json"
+        }
       })
-      .then(res => res.json())
-      .then(response => {
-        if (response.result === "success") {
+      .then(response => response.json())
+      .then(res => {
+        if (res.result === "success") {
           alert("✅ Task saved successfully!");
           form.reset();
         } else {
-          alert("❌ Error saving task: " + response.error);
+          alert("❌ Error saving task! " + res.error);
+          console.error("Save error:", res.error);
         }
       })
       .catch(err => {
-        alert("❌ Connection error. Check browser console.");
-        console.error(err);
+        alert("⚠️ Connection error. Please check your internet or CORS settings.");
+        console.error("Fetch error:", err);
       });
     });
   </script>
