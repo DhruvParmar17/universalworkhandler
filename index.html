@@ -1,142 +1,239 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Universal Department Work Logger</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f0f4f8;
-      padding: 30px;
+    :root {
+      --primary: #27ae60;
+      --primary-dark: #219150;
+      --error: #e74c3c;
+      --text: #2c3e50;
+      --bg: #f0f4f8;
+      --card-bg: #fff;
     }
-
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background-color: var(--bg);
+      padding: 20px;
+      color: var(--text);
+    }
     h2 {
       text-align: center;
-      color: #2c3e50;
+      margin-bottom: 25px;
+      color: var(--text);
     }
-
-    form {
-      max-width: 600px;
-      margin: auto;
-      background-color: #fff;
+    .container {
+      max-width: 650px;
+      margin: 0 auto;
+    }
+    .form-card {
+      background-color: var(--card-bg);
       padding: 25px;
       border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     }
-
+    .form-group {
+      margin-bottom: 20px;
+    }
     label {
-      font-weight: bold;
+      font-weight: 600;
       display: block;
-      margin-top: 15px;
+      margin-bottom: 8px;
     }
-
-    input[type="text"],
-    input[type="date"],
-    textarea,
-    select {
+    input, select, textarea {
       width: 100%;
-      padding: 10px;
-      margin-top: 5px;
-      border-radius: 5px;
-      border: 1px solid #ccc;
-    }
-
-    button {
-      margin-top: 20px;
-      background-color: #27ae60;
-      color: white;
       padding: 12px;
-      border: none;
-      border-radius: 5px;
-      width: 100%;
+      border: 1px solid #ddd;
+      border-radius: 6px;
       font-size: 16px;
-      cursor: pointer;
+      transition: border 0.3s;
     }
-
-    button:hover {
-      background-color: #219150;
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--primary);
+      outline: none;
+      box-shadow: 0 0 0 2px rgba(39, 174, 96, 0.2);
+    }
+    textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+    .btn {
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      padding: 14px;
+      font-size: 16px;
+      font-weight: 600;
+      border-radius: 6px;
+      cursor: pointer;
+      width: 100%;
+      transition: background 0.3s;
+    }
+    .btn:hover {
+      background-color: var(--primary-dark);
+    }
+    .btn:disabled {
+      background-color: #95a5a6;
+      cursor: not-allowed;
+    }
+    .alert {
+      padding: 15px;
+      border-radius: 6px;
+      margin-bottom: 20px;
+      display: none;
+    }
+    .alert-success {
+      background-color: #d5f5e3;
+      color: #27ae60;
+      border: 1px solid #2ecc71;
+    }
+    .alert-error {
+      background-color: #fadbd8;
+      color: var(--error);
+      border: 1px solid var(--error);
+    }
+    .required::after {
+      content: " *";
+      color: var(--error);
     }
   </style>
 </head>
 <body>
-  <h2>Universal Department Work Logger</h2>
-
-  <form id="workForm">
-    <label>Date:</label>
-    <input type="date" name="date" required>
-
-    <label>Shift:</label>
-    <select name="shift" required>
-      <option value="">Select Shift</option>
-      <option>Morning</option>
-      <option>Afternoon</option>
-      <option>Night</option>
-      <option>General</option>
-    </select>
-
-    <label>Sector:</label>
-    <input type="text" name="sector" placeholder="e.g., Hospital, School" required>
-
-    <label>Department:</label>
-    <input type="text" name="department" required>
-
-    <label>Sub-Department:</label>
-    <input type="text" name="subdepartment">
-
-    <label>Assigned Person:</label>
-    <input type="text" name="person">
-
-    <label>Task Description:</label>
-    <textarea name="task" rows="3" required></textarea>
-
-    <label>Status:</label>
-    <select name="status" required>
-      <option value="">Select Status</option>
-      <option>Pending</option>
-      <option>In Progress</option>
-      <option>Completed</option>
-    </select>
-
-    <label>Remarks:</label>
-    <textarea name="remarks" rows="2"></textarea>
-
-    <button type="submit">Save Task</button>
-  </form>
+  <div class="container">
+    <h2>Universal Department Work Logger</h2>
+    
+    <div id="alertBox" class="alert" role="alert"></div>
+    
+    <div class="form-card">
+      <form id="workForm">
+        <div class="form-group">
+          <label for="date" class="required">Date</label>
+          <input type="date" id="date" name="date" required />
+        </div>
+        
+        <div class="form-group">
+          <label for="shift" class="required">Shift</label>
+          <select id="shift" name="shift" required>
+            <option value="">Select Shift</option>
+            <option>Morning</option>
+            <option>Afternoon</option>
+            <option>Night</option>
+            <option>General</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label for="sector" class="required">Sector</label>
+          <input type="text" id="sector" name="sector" placeholder="e.g., Hospital, School" required />
+        </div>
+        
+        <div class="form-group">
+          <label for="department" class="required">Department</label>
+          <input type="text" id="department" name="department" required />
+        </div>
+        
+        <div class="form-group">
+          <label for="subdepartment">Sub-Department</label>
+          <input type="text" id="subdepartment" name="subdepartment" />
+        </div>
+        
+        <div class="form-group">
+          <label for="person">Assigned Person</label>
+          <input type="text" id="person" name="person" />
+        </div>
+        
+        <div class="form-group">
+          <label for="task" class="required">Task Description</label>
+          <textarea id="task" name="task" required></textarea>
+        </div>
+        
+        <div class="form-group">
+          <label for="status" class="required">Status</label>
+          <select id="status" name="status" required>
+            <option value="">Select Status</option>
+            <option>Pending</option>
+            <option>In Progress</option>
+            <option>Completed</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label for="remarks">Remarks</label>
+          <textarea id="remarks" name="remarks"></textarea>
+        </div>
+        
+        <button type="submit" class="btn" id="submitBtn">Save Task</button>
+      </form>
+    </div>
+  </div>
 
   <script>
-    const form = document.getElementById("workForm");
-    const scriptURL = "https://script.google.com/macros/s/AKfycbxZHdV2_P7M8PY0fWwmOCdnW3IQ4dejPrvFNVIjkYxv4p37f_1u-eEQoeCK-0NqhIJGiQ/exec";
+    document.addEventListener('DOMContentLoaded', () => {
+      const form = document.getElementById('workForm');
+      const submitBtn = document.getElementById('submitBtn');
+      const alertBox = document.getElementById('alertBox');
+      const scriptURL = 'https://script.google.com/macros/s/AKfycbyE0q2MIcUuMvioXh_wV6JrQjnMoOzyPcDWp8sq6ManxYlaaTp6isBsOpWOkhE-gcGSbA/exec';
 
-    form.addEventListener("submit", e => {
-      e.preventDefault();
+      // Set today's date as default
+      const today = new Date().toISOString().split('T')[0];
+      document.getElementById('date').value = today;
 
-      const formData = new FormData(form);
-      const data = {};
-      formData.forEach((value, key) => {
-        data[key] = value;
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        if (!form.checkValidity()) {
+          form.reportValidity();
+          return;
+        }
+
+        const formData = new FormData(form);
+        const data = {};
+        formData.forEach((value, key) => {
+          data[key] = value.trim();
+        });
+
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Saving...';
+        alertBox.style.display = 'none';
+
+        try {
+          const response = await fetch(scriptURL, {
+            method: 'POST',
+            body: JSON.stringify(data),
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          });
+
+          const result = await response.json();
+
+          if (result.result === 'success') {
+            showAlert('Task saved successfully!', 'success');
+            form.reset();
+            document.getElementById('date').value = today;
+          } else {
+            throw new Error(result.error || 'Failed to save task');
+          }
+        } catch (error) {
+          console.error('Error:', error);
+          showAlert(`Error: ${error.message}`, 'error');
+        } finally {
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Save Task';
+        }
       });
 
-      fetch(scriptURL, {
-        method: "POST",
-        body: JSON.stringify(data),
-        headers: {
-          "Content-Type": "application/json"
-        }
-      })
-      .then(response => response.json())
-      .then(res => {
-        if (res.result === "success") {
-          alert("✅ Task saved successfully!");
-          form.reset();
-        } else {
-          alert("❌ Error saving task! " + res.error);
-          console.error("Save error:", res.error);
-        }
-      })
-      .catch(err => {
-        alert("⚠️ Connection error. Please check your internet or CORS settings.");
-        console.error("Fetch error:", err);
-      });
+      function showAlert(message, type) {
+        alertBox.textContent = message;
+        alertBox.className = `alert alert-${type}`;
+        alertBox.style.display = 'block';
+
+        setTimeout(() => {
+          alertBox.style.display = 'none';
+        }, 5000);
+      }
     });
   </script>
 </body>
