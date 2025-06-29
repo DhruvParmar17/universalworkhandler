@@ -109,7 +109,6 @@
           <label for="date" class="required">Date</label>
           <input type="date" id="date" name="date" required />
         </div>
-        
         <div class="form-group">
           <label for="shift" class="required">Shift</label>
           <select id="shift" name="shift" required>
@@ -120,32 +119,26 @@
             <option>General</option>
           </select>
         </div>
-        
         <div class="form-group">
           <label for="sector" class="required">Sector</label>
           <input type="text" id="sector" name="sector" placeholder="e.g., Hospital, School" required />
         </div>
-        
         <div class="form-group">
           <label for="department" class="required">Department</label>
           <input type="text" id="department" name="department" required />
         </div>
-        
         <div class="form-group">
           <label for="subdepartment">Sub-Department</label>
           <input type="text" id="subdepartment" name="subdepartment" />
         </div>
-        
         <div class="form-group">
           <label for="person">Assigned Person</label>
           <input type="text" id="person" name="person" />
         </div>
-        
         <div class="form-group">
           <label for="task" class="required">Task Description</label>
           <textarea id="task" name="task" required></textarea>
         </div>
-        
         <div class="form-group">
           <label for="status" class="required">Status</label>
           <select id="status" name="status" required>
@@ -155,12 +148,10 @@
             <option>Completed</option>
           </select>
         </div>
-        
         <div class="form-group">
           <label for="remarks">Remarks</label>
           <textarea id="remarks" name="remarks"></textarea>
         </div>
-        
         <button type="submit" class="btn" id="submitBtn">Save Task</button>
       </form>
     </div>
@@ -172,9 +163,7 @@
       const submitBtn = document.getElementById('submitBtn');
       const alertBox = document.getElementById('alertBox');
 
-      // ✅ Your updated Web App URL
       const scriptURL = 'https://script.google.com/macros/s/AKfycbzK-jKBTtRbsK7H_Y50aIwBDM9LvQ8PNu1F5-n0_yJzjBrmWTjg6s8unsHZaobVRUn6wg/exec';
-
       const today = new Date().toISOString().split('T')[0];
       document.getElementById('date').value = today;
 
@@ -199,8 +188,11 @@
         try {
           const response = await fetch(scriptURL, {
             method: 'POST',
-            body: JSON.stringify(data),
-            headers: { 'Content-Type': 'application/json' }
+            headers: {
+              'Content-Type': 'text/plain;charset=utf-8'
+            },
+            redirect: 'follow',
+            body: JSON.stringify(data)
           });
 
           const result = await response.json();
@@ -225,7 +217,6 @@
         alertBox.textContent = message;
         alertBox.className = `alert alert-${type}`;
         alertBox.style.display = 'block';
-
         setTimeout(() => {
           alertBox.style.display = 'none';
         }, 5000);
